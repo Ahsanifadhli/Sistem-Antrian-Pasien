@@ -47,19 +47,18 @@ def TambahAntrianDarurat():
             print("5. ESI 5 (Kondisi Tidak Mendesak)")
             LevelDarurat = int(input("Masukkan Level ESI Pasien (1-5): "))
             if LevelDarurat in [1, 2, 3, 4, 5]:
-                # Menempatkan pasien darurat ke depan berdasarkan prioritas ESI
-                if LevelDarurat == 1:
-                    antrian_pasien.appendleft((NamaPasienDarurat, LevelDarurat))
-                elif LevelDarurat == 2:
-                    antrian_pasien.insert(1, (NamaPasienDarurat, LevelDarurat))
-                elif LevelDarurat == 3:
-                    antrian_pasien.insert(2, (NamaPasienDarurat, LevelDarurat))
-                else:
-                    antrian_pasien.append((NamaPasienDarurat, LevelDarurat))  # ESI 4-5 di belakang
+                # Tambahkan pasien ke antrian
+                antrian_pasien.append((NamaPasienDarurat, LevelDarurat))
+                # Urutkan berdasarkan ESI (ESI 1 di depan)
+                antrian_pasien_sorted = sorted(antrian_pasien, key=lambda x: x[1])
+                antrian_pasien.clear()
+                antrian_pasien.extend(antrian_pasien_sorted)
+                
                 print("Berhasil, saudara/i", NamaPasienDarurat, " dengan level ESI", LevelDarurat, " telah ditambahkan ke antrian.\n")
                 break
             else:
                 print("⚠️ Error, coba masukkan lagi.")
+
 
         while True:  # Loop untuk validasi input
             PeriksaPasienDarurat = input("Apakah ada pasien lagi? (Y/N): ").upper()
@@ -76,7 +75,7 @@ def TambahAntrianDarurat():
             
 def UpdateAntrian():
     while True:
-        print("1. Tambah Antrian")
+        print("\n1. Tambah Antrian")
         print("2. Tambah Antrian (Darurat)")
         x = int(input("Pilih Menu: "))
         if x == 1:
